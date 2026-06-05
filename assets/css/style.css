@@ -3,6 +3,7 @@
    ========================================================================== */
 
 /* 1. CSS Custom Properties / Design Systeem */
+/* Responsive navbar */
 :root {
     --primary: #ff2a5f;
     --primary-hover: #e01a4f;
