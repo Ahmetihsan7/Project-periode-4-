@@ -1,0 +1,13 @@
+# Beveiliging: Voorkom direct overzicht van mappen (Directory Indexes)
+Options -Indexes
+
+# Forceer UTF-8 karakterset voor alle bestanden
+AddDefaultCharset UTF-8
+
+# Indien mod_rewrite beschikbaar is, kunnen we eventuele routering inschakelen (indien gewenst)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # Voorkom toegang tot config mappen of kritieke bestanden
+    RewriteRule ^config/ - [F,L]
+    RewriteRule ^database/ - [F,L]
+</IfModule>
