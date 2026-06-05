@@ -89,3 +89,5 @@ if ($conn->connect_error) {
 $conn->set_charset("utf8mb4");
 
 // De variabele $conn is nu gereed voor gebruik in andere scripts.
+
+// Database validation
