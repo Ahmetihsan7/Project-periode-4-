@@ -10,6 +10,8 @@
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/functions.php';
 
+// Tickets overzicht verbeterd
+
 // Controleer toegang vóór redirect
 checkAccess(['admin', 'medewerker']);
 
