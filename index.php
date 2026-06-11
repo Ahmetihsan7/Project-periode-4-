@@ -209,3 +209,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Footer inladen
 include 'includes/footer.php'; 
 ?>
+<!-- Homepage update -->

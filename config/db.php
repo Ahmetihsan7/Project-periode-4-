@@ -3,47 +3,25 @@
  * Database Connectie - Aurora Theater
  * 
  * Dit bestand zorgt voor de verbinding met de MySQL database via MySQLi.
- * Het bevat automatische host/poort detectie voor WAMP/localhost.
+ * Het bevat foutcontrole en is geoptimaliseerd voor WAMP/localhost.
  */
 
 // Schakel mysqli foutrapportage uitzonderingen uit om nette foutafhandeling mogelijk te maken
 mysqli_report(MYSQLI_REPORT_OFF);
 
 // Database configuratie parameters
+$db_host = 'localhost';
 $db_user = 'root';
 $db_pass = '';
 $db_name = 'aurora_theater';
 
-// Lijst van mogelijke hosts en poorten om automatisch te proberen op WAMP/localhost
-$possible_hosts = [
-    'localhost',
-    '127.0.0.1',
-    '127.0.0.1:3308', // WAMP MySQL/MariaDB alternatieve poort
-    'localhost:3308',
-    '127.0.0.1:3306',
-    'localhost:3306',
-    '127.0.0.1:3307',
-    'localhost:3307'
-];
+// Probeer verbinding te maken met de database (met @ om waarschuwingen te onderdrukken)
+$conn = @new mysqli($db_host, $db_user, $db_pass, $db_name);
 
-$conn = null;
-$connected = false;
-$db_host = 'localhost';
-
-// Probeer direct verbinding te maken met de database op een van de hosts
-foreach ($possible_hosts as $host) {
-    // We geven direct $db_name mee. Als de database is verwijderd of niet bestaat, mislukt de verbinding.
-    $conn = @new mysqli($host, $db_user, $db_pass, $db_name);
-    if ($conn && !$conn->connect_error) {
-        $connected = true;
-        $db_host = $host;
-        break;
-    }
-}
-
-// Foutcontrole: als de verbinding is mislukt (bijvoorbeeld omdat de database is verwijderd of MySQL uit staat)
-if (!$connected || !$conn || $conn->connect_error) {
+// Foutcontrole: controleer of de verbinding is mislukt
+if ($conn->connect_error) {
     // Nette foutmelding tonen aan de gebruiker (Unhappy Scenario)
+    // Dit voorkomt lelijke PHP stack traces en toont een professionele foutpagina.
     die("<!DOCTYPE html>
     <html lang='nl'>
     <head>
@@ -111,3 +89,5 @@ if (!$connected || !$conn || $conn->connect_error) {
 $conn->set_charset("utf8mb4");
 
 // De variabele $conn is nu gereed voor gebruik in andere scripts.
+
+// Database validation

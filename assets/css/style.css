@@ -3,6 +3,8 @@
    ========================================================================== */
 
 /* 1. CSS Custom Properties / Design Systeem */
+/* Responsive navbar */
+/* Mobile improvements */
 :root {
     --primary: #ff2a5f;
     --primary-hover: #e01a4f;
@@ -1013,3 +1015,8 @@ textarea.form-control {
         padding: 35px 20px;
     }
 }
+/* Navbar update */
+
+/* Hero section improvements */
+
+/* Mobile responsive fixes */

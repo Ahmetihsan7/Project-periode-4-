@@ -126,3 +126,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 // Footer inladen
 include 'includes/footer.php'; 
 ?>
+
+<?php // Registration validation ?>
