@@ -106,6 +106,9 @@ if ($action === 'view' && $message_id > 0):
     <div class="table-panel">
         <div class="panel-header">
             <h3>Binnengekomen Berichten</h3>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <a href="meldingen/create.php" class="btn-primary" style="text-decoration: none; padding: 8px 16px; font-size: 0.85rem; border-radius: 20px; font-weight: 600;">+ Nieuwe Melding</a>
+            </div>
         </div>
         
         <div class="table-filter-bar">
@@ -146,7 +149,19 @@ if ($action === 'view' && $message_id > 0):
                                 </td>
                                 <td><strong><?php echo sanitize($msg['naam']); ?></strong></td>
                                 <td><?php echo sanitize($msg['email']); ?></td>
-                                <td><?php echo sanitize($msg['onderwerp']); ?></td>
+                                <td>
+                                    <?php echo sanitize($msg['onderwerp']); ?>
+                                    <?php if (!empty($msg['prioriteit'])): 
+                                        $prioClass = '';
+                                        if ($msg['prioriteit'] === 'hoog') $prioClass = 'background-color: rgba(255, 61, 0, 0.2); color: #ff3d00; border: 1px solid rgba(255, 61, 0, 0.4);';
+                                        elseif ($msg['prioriteit'] === 'gemiddeld') $prioClass = 'background-color: rgba(255, 193, 7, 0.15); color: #ffc107; border: 1px solid rgba(255, 193, 7, 0.3);';
+                                        else $prioClass = 'background-color: rgba(0, 230, 118, 0.15); color: #00e676; border: 1px solid rgba(0, 230, 118, 0.3);';
+                                    ?>
+                                        <span class="badge" style="font-size: 0.65rem; margin-left: 5px; padding: 2px 6px; border-radius: 4px; <?php echo $prioClass; ?>">
+                                            <?php echo strtoupper($msg['prioriteit']); ?>
+                                        </span>
+                                    <?php endif; ?>
+                                </td>
                                 <td><?php echo date('d-m-Y H:i', strtotime($msg['gemaakt_op'])); ?></td>
                                 <td class="action-buttons">
                                     <a href="meldingen.php?action=view&id=<?php echo $msg['id']; ?>" class="btn-action" title="Bekijken / Lezen">👁️</a>
