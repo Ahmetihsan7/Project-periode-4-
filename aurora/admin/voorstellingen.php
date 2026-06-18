@@ -5,8 +5,8 @@
  * Beheert de programmering (CRUD voorstellingen).
  * Toegankelijk voor admins en medewerkers.
  */
-   // Unhupy scenario: overzicht voorstellinggen gecontroleerd, is gelukt database
-   
+   // Unhupy scenario: overzicht voorstellinggen gecontroleerd, is gelukt database p4
+
 // Laad db en functies om redirects te kunnen verwerken vóór HTML output
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/functions.php';
