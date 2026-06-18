@@ -1,0 +1,1022 @@
+/* ==========================================================================
+   Aurora Theater - Hoofd Stylesheet (Luxe Cinema/Theater Thema)
+   ========================================================================== */
+
+/* 1. CSS Custom Properties / Design Systeem */
+/* Responsive navbar */
+/* Mobile improvements */
+:root {
+    --primary: #ff2a5f;
+    --primary-hover: #e01a4f;
+    --bg-dark: #07070a;
+    --bg-card: #12121c;
+    --border-color: #242436;
+    --text-main: #ffffff;
+    --text-muted: #8e8e9f;
+    --success: #00e676;
+    --error: #ff3d00;
+    --warning: #ffb300;
+    --shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --border-radius: 8px;
+    --border-radius-lg: 16px;
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-serif: 'Playfair Display', Georgia, serif;
+}
+
+/* Reset en basis stijlen */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: var(--text-main);
+    transition: var(--transition);
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Layout Utilities */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.text-center { text-align: center; }
+.my-4 { margin-top: 2rem; margin-bottom: 2rem; }
+.py-4 { padding-top: 2rem; padding-bottom: 2rem; }
+.py-5 { padding-top: 4rem; padding-bottom: 4rem; }
+
+/* 2. Knoppen */
+.btn-primary, .btn-secondary, .btn-login, .btn-dashboard {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 28px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    border: none;
+    transition: var(--transition);
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(255, 42, 95, 0.3);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 42, 95, 0.4);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: #fff;
+    border: 2px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background-color: var(--border-color);
+    transform: translateY(-2px);
+}
+
+.btn-login {
+    background-color: transparent;
+    color: #fff;
+    padding: 10px 20px;
+}
+
+.btn-login:hover, .active-link {
+    color: var(--primary);
+}
+
+.btn-dashboard {
+    background: linear-gradient(135deg, var(--primary), #b3003b);
+    color: #fff;
+    padding: 10px 22px;
+}
+
+.btn-dashboard:hover {
+    transform: scale(1.05);
+}
+
+.btn-danger {
+    background-color: var(--error);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: var(--border-radius);
+    border: none;
+    cursor: pointer;
+}
+
+/* 3. Header & Navigatie */
+.site-header {
+    background-color: rgba(7, 7, 10, 0.85);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--border-color);
+    padding: 15px 0;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.logo-accent {
+    color: var(--primary);
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links a {
+    font-weight: 500;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    position: relative;
+    padding: 5px 0;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    color: var(--text-main);
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary);
+    transition: var(--transition);
+}
+
+.nav-links a:hover::after, .nav-links a.active::after {
+    width: 100%;
+}
+
+.auth-buttons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.welcome-user {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Hamburger Menu */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.menu-toggle .bar {
+    width: 25px;
+    height: 3px;
+    background-color: var(--text-main);
+    border-radius: 2px;
+    transition: var(--transition);
+}
+
+/* 4. Alert & Flash Messages (Happy/Unhappy Scenario) */
+.message-container {
+    margin-top: 1.5rem;
+}
+
+.alert {
+    display: flex;
+    align-items: center;
+    padding: 16px 24px;
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+    font-weight: 500;
+    position: relative;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-10px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.alert-success {
+    background-color: rgba(0, 230, 118, 0.1);
+    border: 1px solid var(--success);
+    color: #e0ffe0;
+}
+
+.alert-error {
+    background-color: rgba(255, 61, 0, 0.1);
+    border: 1px solid var(--error);
+    color: #ffeae5;
+}
+
+.alert-icon {
+    font-size: 1.2rem;
+    margin-right: 15px;
+}
+
+.alert-text {
+    flex-grow: 1;
+}
+
+.alert-close {
+    background: transparent;
+    border: none;
+    color: inherit;
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+    padding-left: 15px;
+}
+
+/* 5. Hero Section */
+.hero {
+    height: calc(85vh - 75px);
+    position: relative;
+    background: linear-gradient(rgba(7, 7, 10, 0.4), rgba(7, 7, 10, 0.95)), url('../images/hero.png');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 650px;
+}
+
+.hero h2 {
+    font-family: var(--font-serif);
+    font-size: 3.5rem;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    font-weight: 700;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.hero h2 span {
+    color: var(--primary);
+}
+
+.hero p {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    margin-bottom: 35px;
+    line-height: 1.7;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 20px;
+}
+
+/* 6. Section Headers */
+.section-title {
+    font-family: var(--font-serif);
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    position: relative;
+    display: inline-block;
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background-color: var(--primary);
+    margin: 10px auto 0 auto;
+}
+
+.section-subtitle {
+    color: var(--text-muted);
+    font-size: 1rem;
+    margin-bottom: 50px;
+}
+
+/* 7. Voorstellingen Cards & Grid */
+.shows-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.show-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.show-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow);
+    border-color: rgba(255, 42, 95, 0.4);
+}
+
+.card-img-wrapper {
+    position: relative;
+    padding-top: 130%; /* Aspect ratio van een poster */
+    overflow: hidden;
+}
+
+.card-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.show-card:hover .card-img {
+    transform: scale(1.05);
+}
+
+.badge-populair {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: var(--primary);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.card-content {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.card-date {
+    color: var(--primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    margin-bottom: 12px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.card-desc {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.5;
+}
+
+.card-footer {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+}
+
+.card-price {
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: #fff;
+}
+
+.btn-card {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+}
+
+/* Empty State / Lege database */
+.empty-state {
+    text-align: center;
+    padding: 60px 40px;
+    background-color: var(--bg-card);
+    border: 1px dashed var(--border-color);
+    border-radius: var(--border-radius-lg);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.empty-state-icon {
+    font-size: 3rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+}
+
+.empty-state h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.empty-state p {
+    color: var(--text-muted);
+    margin-bottom: 25px;
+}
+
+/* 8. Contact Formulier */
+.contact-section {
+    background-color: #0b0b12;
+    border-top: 1px solid var(--border-color);
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.contact-info-panel h3 {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.contact-info-list {
+    margin: 30px 0;
+}
+
+.contact-info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.contact-info-item span.icon {
+    color: var(--primary);
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.contact-form-panel {
+    background-color: var(--bg-card);
+    padding: 40px;
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--border-color);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.form-control {
+    width: 100%;
+    background-color: rgba(7, 7, 10, 0.6);
+    border: 1px solid var(--border-color);
+    padding: 12px 16px;
+    border-radius: var(--border-radius);
+    color: #fff;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    transition: var(--transition);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 10px rgba(255, 42, 95, 0.15);
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* 9. Authenticatie Pagina's (Login / Registreren) */
+.auth-wrapper {
+    min-height: calc(100vh - 250px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+}
+
+.auth-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 50px 40px;
+    border-radius: var(--border-radius-lg);
+    width: 100%;
+    max-width: 480px;
+    box-shadow: var(--shadow);
+}
+
+.auth-card h2 {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.auth-subtitle {
+    color: var(--text-muted);
+    text-align: center;
+    font-size: 0.9rem;
+    margin-bottom: 30px;
+}
+
+.auth-footer {
+    margin-top: 25px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.auth-footer a {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.auth-footer a:hover {
+    color: var(--primary-hover);
+}
+
+/* 10. Filteren op Catalogus Pagina */
+.catalog-filter {
+    background-color: var(--bg-card);
+    padding: 25px;
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--border-color);
+    margin-bottom: 40px;
+}
+
+.filter-form {
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+}
+
+.filter-form .form-group {
+    margin-bottom: 0;
+    flex-grow: 1;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+/* 11. Tickets & Interactief Boekingsscherm */
+.booking-grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 40px;
+    margin-top: 30px;
+}
+
+.booking-panel {
+    background-color: var(--bg-card);
+    padding: 30px;
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--border-color);
+}
+
+/* Zaal Stoel Selector */
+.theater-screen {
+    background: linear-gradient(to bottom, rgba(255, 42, 95, 0.4), transparent);
+    height: 30px;
+    width: 80%;
+    margin: 20px auto 40px auto;
+    border-radius: 50% / 10px 10px 0 0;
+    box-shadow: 0 3px 20px rgba(255, 42, 95, 0.2);
+    text-align: center;
+    line-height: 30px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: bold;
+    letter-spacing: 4px;
+}
+
+.seat-map-wrapper {
+    overflow-x: auto;
+    padding: 10px 0;
+}
+
+.seat-map {
+    display: grid;
+    grid-template-columns: repeat(10, 30px);
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.seat {
+    width: 30px;
+    height: 30px;
+    background-color: var(--border-color);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px 6px 0 0;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.5);
+    font-weight: bold;
+}
+
+.seat.available:hover {
+    background-color: rgba(255, 42, 95, 0.3);
+    border-color: var(--primary);
+    transform: scale(1.1);
+}
+
+.seat.selected {
+    background-color: var(--primary) !important;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(255, 42, 95, 0.6);
+}
+
+.seat.taken {
+    background-color: #2a2a2a !important;
+    border-color: #1a1a1a;
+    cursor: not-allowed;
+    color: rgba(255,255,255,0.15);
+}
+
+/* Legenda */
+.seat-legend {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 30px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.legend-item .seat {
+    cursor: default;
+    width: 20px;
+    height: 20px;
+}
+
+/* Summary Card */
+.summary-panel {
+    background-color: var(--bg-card);
+    padding: 30px;
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--border-color);
+    align-self: flex-start;
+    box-shadow: var(--shadow);
+}
+
+.summary-panel h3 {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.summary-list {
+    margin-bottom: 25px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+}
+
+.summary-item.total {
+    border-top: 1px solid var(--border-color);
+    padding-top: 15px;
+    margin-top: 15px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--primary);
+}
+
+/* 12. Footer Styling */
+.site-footer {
+    background-color: #050508;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-color);
+    padding: 70px 0 25px 0;
+    margin-top: 60px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 2fr;
+    gap: 40px;
+    margin-bottom: 50px;
+}
+
+.footer-col h4 {
+    color: #fff;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.footer-logo {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.brand-desc {
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.socials {
+    display: flex;
+    gap: 10px;
+}
+
+.socials a {
+    width: 36px;
+    height: 36px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: var(--text-muted);
+}
+
+.socials a:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-3px);
+}
+
+.links-col ul li {
+    margin-bottom: 12px;
+}
+
+.links-col ul li a {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.links-col ul li a:hover {
+    color: #fff;
+    padding-left: 5px;
+}
+
+.contact-col p {
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.contact-col a {
+    color: var(--text-muted);
+}
+
+.contact-col a:hover {
+    color: var(--primary);
+}
+
+.newsletter-col p {
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+.newsletter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.newsletter-form input {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 12px 16px;
+    border-radius: 40px;
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+.newsletter-form input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.btn-newsletter {
+    padding: 12px 0;
+}
+
+.footer-bottom {
+    border-top: 1px solid var(--border-color);
+    padding-top: 25px;
+    text-align: center;
+    font-size: 0.8rem;
+}
+
+/* ==========================================================================
+   Responsive Instellingen (Media Queries)
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+    .footer-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+    }
+    
+    .booking-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Navbar Hamburger Menu */
+    .menu-toggle {
+        display: flex;
+    }
+    
+    .nav-menu {
+        position: fixed;
+        top: 75px;
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - 75px);
+        background-color: var(--bg-dark);
+        border-top: 1px solid var(--border-color);
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 40px 20px;
+        gap: 45px;
+        transition: 0.4s ease;
+        z-index: 99;
+    }
+    
+    .nav-menu.active {
+        left: 0;
+    }
+    
+    .nav-links {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        gap: 25px;
+    }
+    
+    .nav-links a {
+        font-size: 1.2rem;
+    }
+    
+    .auth-buttons {
+        flex-direction: column;
+        width: 100%;
+        gap: 15px;
+    }
+    
+    .btn-nav {
+        width: 80%;
+    }
+    
+    /* Hero */
+    .hero h2 {
+        font-size: 2.5rem;
+    }
+    
+    .hero p {
+        width: 100%;
+    }
+    
+    /* Contact */
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    /* Filter */
+    .filter-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-buttons {
+        justify-content: flex-end;
+    }
+}
+
+@media (max-width: 600px) {
+    .hero h2 {
+        font-size: 2rem;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .contact-form-panel {
+        padding: 25px;
+    }
+    
+    .auth-card {
+        padding: 35px 20px;
+    }
+}
+/* Navbar update */
+
+/* Hero section improvements */
+
+/* Mobile responsive fixes */
