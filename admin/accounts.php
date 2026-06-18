@@ -17,11 +17,13 @@ if (!hasRole('admin')) {
 }
 ?>
 
-<!-- Overzichtstabel van alle gebruikers (READ ONLY) -->
+<!-- Overzichtstabel van alle gebruikers -->
 <div class="table-panel">
     <div class="panel-header">
         <h3>Overzicht Geregistreerde Accounts</h3>
-        <span class="badge badge-gelezen" style="padding: 6px 14px; font-size: 0.8rem;">👁️ Alleen lezen</span>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <a href="accounts/create.php" class="btn-primary" style="text-decoration: none; padding: 8px 16px; font-size: 0.85rem; border-radius: 20px; font-weight: 600;">+ Nieuw Account</a>
+        </div>
     </div>
 
     <!-- Live zoekbalk (JavaScript client-side filter) -->
