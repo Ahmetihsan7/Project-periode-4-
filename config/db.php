@@ -20,7 +20,10 @@ $conn = @new mysqli($db_host, $db_user, $db_pass, $db_name);
 
 // Foutcontrole: controleer of de verbinding is mislukt
 if ($conn->connect_error) {
-    // Nette foutmelding tonen aan de gebruiker (Unhappy Scenario)
+    if (isset($ignore_db_error) && $ignore_db_error) {
+        // Doorlopen: de pagina handelt de databaseverbinding fout zelf af
+    } else {
+        // Nette foutmelding tonen aan de gebruiker (Unhappy Scenario)
     // Dit voorkomt lelijke PHP stack traces en toont een professionele foutpagina.
     die("<!DOCTYPE html>
     <html lang='nl'>
@@ -83,11 +86,31 @@ if ($conn->connect_error) {
         </div>
     </body>
     </html>");
+    }
 }
 
-// Zet de karakterset op UTF-8 voor correcte weergave van speciale tekens
-$conn->set_charset("utf8mb4");
+// Zet de karakterset op UTF-8 voor correcte weergave van speciale tekens indien verbonden
+if (!$conn->connect_error) {
+    $conn->set_charset("utf8mb4");
+}
 
 // De variabele $conn is nu gereed voor gebruik in andere scripts.
 
-// Database validation
+// Helper om kolommen dynamisch toe te voegen indien niet aanwezig
+function checkAndAddColumn($conn, $table, $column, $definition) {
+    $result = $conn->query("SHOW COLUMNS FROM `$table` LIKE '$column'");
+    if ($result && $result->num_rows == 0) {
+        $conn->query("ALTER TABLE `$table` ADD `$column` $definition");
+    }
+}
+
+// Voer de benodigde database aanpassingen door
+if (!$conn->connect_error) {
+    checkAndAddColumn($conn, 'medewerkers', 'voornaam', 'VARCHAR(50) DEFAULT NULL');
+    checkAndAddColumn($conn, 'medewerkers', 'achternaam', 'VARCHAR(50) DEFAULT NULL');
+    checkAndAddColumn($conn, 'medewerkers', 'telefoon', 'VARCHAR(20) DEFAULT NULL');
+    checkAndAddColumn($conn, 'tickets', 'tickettype', "VARCHAR(50) DEFAULT 'Standaard'");
+    checkAndAddColumn($conn, 'meldingen', 'prioriteit', "VARCHAR(50) DEFAULT 'gemiddeld'");
+    checkAndAddColumn($conn, 'meldingen', 'datum', 'DATE DEFAULT NULL');
+}
+
