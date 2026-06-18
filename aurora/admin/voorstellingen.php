@@ -5,7 +5,7 @@
  * Beheert de programmering (CRUD voorstellingen).
  * Toegankelijk voor admins en medewerkers.
  */
-   // Unhupy scenario: overzicht voorstellinggen gecontroleerd, is gelukt database p4 ticket ookdd
+   // Unhupy scenario: overzicht voorstellinggen gecontroleerd, is gelukt database ddp4 ticket ookdd
 
 // Laad db en functies om redirects te kunnen verwerken vóór HTML output
 require_once __DIR__ . '/../config/db.php';
