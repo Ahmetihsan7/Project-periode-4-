@@ -27,6 +27,9 @@ CREATE TABLE `medewerkers` (
   `functie` VARCHAR(100) NOT NULL,
   `salaris` DECIMAL(10,2) DEFAULT NULL,
   `aangenomen_op` DATE NOT NULL,
+  `voornaam` VARCHAR(50) DEFAULT NULL,
+  `achternaam` VARCHAR(50) DEFAULT NULL,
+  `telefoon` VARCHAR(20) DEFAULT NULL,
   FOREIGN KEY (`gebruiker_id`) REFERENCES `gebruikers`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -53,6 +56,7 @@ CREATE TABLE `tickets` (
   `aantal_plaatsen` INT NOT NULL,
   `totale_prijs` DECIMAL(7,2) NOT NULL,
   `stoel_nummers` VARCHAR(255) DEFAULT NULL, -- CSV of stoelen bijv. "A1, A2"
+  `tickettype` VARCHAR(50) DEFAULT 'Standaard',
   `status` ENUM('actief', 'geannuleerd') DEFAULT 'actief',
   `geboekt_op` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (`voorstelling_id`) REFERENCES `voorstellingen`(`id`) ON DELETE CASCADE,
@@ -67,6 +71,8 @@ CREATE TABLE `meldingen` (
   `onderwerp` VARCHAR(255) NOT NULL,
   `bericht` TEXT NOT NULL,
   `status` ENUM('nieuw', 'gelezen') DEFAULT 'nieuw',
+  `prioriteit` VARCHAR(50) DEFAULT 'gemiddeld',
+  `datum` DATE DEFAULT NULL,
   `gemaakt_op` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
