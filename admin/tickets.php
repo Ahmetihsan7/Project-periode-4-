@@ -104,6 +104,9 @@ if ($action === 'add'):
     <div class="table-panel">
         <div class="panel-header">
             <h3>Boekingsoverzicht (Tickets)</h3>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <a href="tickets/create.php" class="btn-primary" style="text-decoration: none; padding: 8px 16px; font-size: 0.85rem; border-radius: 20px; font-weight: 600;">+ Nieuw Ticket</a>
+            </div>
         </div>
         
         <div class="table-filter-bar">
