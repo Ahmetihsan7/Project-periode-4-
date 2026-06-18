@@ -4,6 +4,7 @@
  * 
  * Toont alle geplande voorstellingen met zoek- en filteropties.
  * Indien een ID is meegegeven wordt de detailpagina getoond.
+ * en het is gelukt
  */
 
 // Header inladen (db.php & functions.php worden geladen)
