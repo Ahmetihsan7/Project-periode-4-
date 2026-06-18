@@ -94,9 +94,10 @@ function getRootUrl() {
         $script_dir .= '/';
     }
     
-    // Als we in de admin-map zitten, neem dan de bovenliggende map als root
-    if (strpos($script_dir, '/admin/') !== false) {
-        $script_dir = str_replace('/admin/', '/', $script_dir);
+    // Als we in de admin-map of een submap zitten, ga terug naar de root map boven /admin/
+    $admin_pos = strpos($script_dir, '/admin/');
+    if ($admin_pos !== false) {
+        $script_dir = substr($script_dir, 0, $admin_pos) . '/';
     }
     
     return $script_dir;
