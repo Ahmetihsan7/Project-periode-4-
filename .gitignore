@@ -1,0 +1,22 @@
+# Omgeving & systeem
+.env
+.DS_Store
+Thumbs.db
+
+# PHP gerelateerd
+*.log
+/vendor/
+
+# Database configuratie (bevat wachtwoorden)
+project/config/database.php
+
+# IDE bestanden
+.vscode/
+.idea/
+*.suo
+*.user
+
+# Tijdelijke bestanden
+*.tmp
+*.bak
+*.swp
