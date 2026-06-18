@@ -149,6 +149,9 @@ if ($action === 'add' || $action === 'edit'):
     <div class="table-panel">
         <div class="panel-header">
             <h3>Geplande Voorstellingen</h3>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <a href="voorstellingen/create.php" class="btn-primary" style="text-decoration: none; padding: 8px 16px; font-size: 0.85rem; border-radius: 20px; font-weight: 600;">+ Nieuwe Voorstelling</a>
+            </div>
         </div>
         
         <div class="table-filter-bar">
