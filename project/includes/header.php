@@ -62,7 +62,13 @@ $siteNaam = 'TicketApp';
                         <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
                     </button>
                     <div class="user-dropdown" id="userDropdown">
-                        <a href="/auth/logout.php" class="dropdown-item logout">Uitloggen</a>
+                        <?php if (heeftRol('bezoeker')): ?>
+                            <a href="/bezoeker/profiel.php" class="dropdown-item">👤 Mijn profiel</a>
+                            <a href="/bezoeker/mijn-tickets.php" class="dropdown-item">🎟️ Mijn tickets</a>
+                            <a href="/bezoeker/account-instellingen.php" class="dropdown-item">⚙️ Instellingen</a>
+                            <hr style="border:none; border-top:1px solid var(--border); margin:4px 0;">
+                        <?php endif; ?>
+                        <a href="/auth/logout.php" class="dropdown-item logout">🚪 Uitloggen</a>
                     </div>
                 </div>
 
