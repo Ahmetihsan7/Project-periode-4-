@@ -13,7 +13,17 @@ require_once __DIR__ . '/functions.php';
 checkAccess(['admin', 'medewerker']);
 
 $current_admin_page = basename($_SERVER['PHP_SELF']);
+$current_uri = $_SERVER['PHP_SELF'];
 $root_url = getRootUrl();
+
+// Bepaal de actieve secties
+$is_dashboard = ($current_admin_page === 'dashboard.php');
+$is_accounts = ($current_admin_page === 'accounts.php' || strpos($current_uri, '/accounts/') !== false);
+$is_medewerkers = ($current_admin_page === 'medewerkers.php' || strpos($current_uri, '/medewerkers/') !== false);
+$is_voorstellingen = ($current_admin_page === 'voorstellingen.php' || strpos($current_uri, '/voorstellingen/') !== false);
+$is_tickets = ($current_admin_page === 'tickets.php' || strpos($current_uri, '/tickets/') !== false);
+$is_meldingen = ($current_admin_page === 'meldingen.php' || strpos($current_uri, '/meldingen/') !== false);
+$is_instellingen = ($current_admin_page === 'instellingen.php' || strpos($current_uri, '/instellingen/') !== false);
 ?>
 <!DOCTYPE html>
 <html lang="nl">
@@ -45,7 +55,7 @@ $root_url = getRootUrl();
             
             <nav class="sidebar-menu">
                 <ul>
-                    <li class="<?php echo ($current_admin_page === 'dashboard.php') ? 'active' : ''; ?>">
+                    <li class="<?php echo $is_dashboard ? 'active' : ''; ?>">
                         <a href="<?php echo $root_url; ?>admin/dashboard.php">
                             <span class="icon">📊</span>Dashboard
                         </a>
@@ -53,31 +63,31 @@ $root_url = getRootUrl();
                     
                     <!-- Alleen Admin mag Accounts en Medewerkers beheren -->
                     <?php if (hasRole('admin')): ?>
-                        <li class="<?php echo ($current_admin_page === 'accounts.php') ? 'active' : ''; ?>">
+                        <li class="<?php echo $is_accounts ? 'active' : ''; ?>">
                             <a href="<?php echo $root_url; ?>admin/accounts.php">
                                 <span class="icon">👥</span>Accounts
                             </a>
                         </li>
-                        <li class="<?php echo ($current_admin_page === 'medewerkers.php') ? 'active' : ''; ?>">
+                        <li class="<?php echo $is_medewerkers ? 'active' : ''; ?>">
                             <a href="<?php echo $root_url; ?>admin/medewerkers.php">
                                 <span class="icon">💼</span>Medewerkers
                             </a>
                         </li>
                     <?php endif; ?>
                     
-                    <li class="<?php echo ($current_admin_page === 'voorstellingen.php') ? 'active' : ''; ?>">
+                    <li class="<?php echo $is_voorstellingen ? 'active' : ''; ?>">
                         <a href="<?php echo $root_url; ?>admin/voorstellingen.php">
                             <span class="icon">🎭</span>Voorstellingen
                         </a>
                     </li>
                     
-                    <li class="<?php echo ($current_admin_page === 'tickets.php') ? 'active' : ''; ?>">
+                    <li class="<?php echo $is_tickets ? 'active' : ''; ?>">
                         <a href="<?php echo $root_url; ?>admin/tickets.php">
                             <span class="icon">🎟️</span>Tickets
                         </a>
                     </li>
                     
-                    <li class="<?php echo ($current_admin_page === 'meldingen.php') ? 'active' : ''; ?>">
+                    <li class="<?php echo $is_meldingen ? 'active' : ''; ?>">
                         <a href="<?php echo $root_url; ?>admin/meldingen.php">
                             <span class="icon">✉️</span>Meldingen
                         </a>
@@ -85,7 +95,7 @@ $root_url = getRootUrl();
                     
                     <!-- Alleen Admin mag instellingen wijzigen -->
                     <?php if (hasRole('admin')): ?>
-                        <li class="<?php echo ($current_admin_page === 'instellingen.php') ? 'active' : ''; ?>">
+                        <li class="<?php echo $is_instellingen ? 'active' : ''; ?>">
                             <a href="<?php echo $root_url; ?>admin/instellingen.php">
                                 <span class="icon">⚙️</span>Instellingen
                             </a>
@@ -120,17 +130,15 @@ $root_url = getRootUrl();
                     <button class="sidebar-toggle-btn" id="sidebar-toggle" aria-label="Toggle menu">☰</button>
                     <h1 class="topnav-title">
                         <?php 
-                        // Bepaal de titel op basis van de bestandsnaam
-                        switch($current_admin_page) {
-                            case 'dashboard.php': echo 'Dashboard Overzicht'; break;
-                            case 'accounts.php': echo 'Accountbeheer'; break;
-                            case 'medewerkers.php': echo 'Medewerkersbeheer'; break;
-                            case 'voorstellingen.php': echo 'Voorstellingen Beheer'; break;
-                            case 'tickets.php': echo 'Ticketverkoop & Boekingen'; break;
-                            case 'meldingen.php': echo 'Contact Meldingen'; break;
-                            case 'instellingen.php': echo 'Systeem Instellingen'; break;
-                            default: echo 'Admin Panel';
-                        }
+                        // Bepaal de titel op basis van de actieve sectie en de pagina
+                        if ($is_dashboard) echo 'Dashboard Overzicht';
+                        elseif ($is_accounts) echo strpos($current_uri, 'create.php') !== false ? 'Nieuw Account Toevoegen' : 'Accountbeheer';
+                        elseif ($is_medewerkers) echo strpos($current_uri, 'create.php') !== false ? 'Nieuwe Medewerker Toevoegen' : 'Medewerkersbeheer';
+                        elseif ($is_voorstellingen) echo strpos($current_uri, 'create.php') !== false ? 'Nieuwe Voorstelling Toevoegen' : 'Voorstellingen Beheer';
+                        elseif ($is_tickets) echo strpos($current_uri, 'create.php') !== false ? 'Nieuw Ticket Toevoegen' : 'Ticketverkoop & Boekingen';
+                        elseif ($is_meldingen) echo strpos($current_uri, 'create.php') !== false ? 'Nieuwe Melding Toevoegen' : 'Contact Meldingen';
+                        elseif ($is_instellingen) echo 'Systeem Instellingen';
+                        else echo 'Admin Panel';
                         ?>
                     </h1>
                 </div>
