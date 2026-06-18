@@ -3,7 +3,7 @@
 // Unhappy scenario ticket overview gecontroleerd
 
 /**
- * Ticketbeheer - Aurora Theater Admin en het is gelukt en update ook 
+ * Ticketbeheer - Aurora Theater Admin en het is gelukt en update ook gedaan
  * 
  * Beheert de ticketboekingen (CRUD tickets).
  * Toegankelijk voor admins en medewerkers.
