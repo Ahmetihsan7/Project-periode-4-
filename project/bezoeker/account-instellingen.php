@@ -49,7 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['actie']) && $_POST['a
     if (!$rij || !password_verify($wachtwoord, $rij['wachtwoord'])) {
         $fouten['verwijder'] = 'Wachtwoord is onjuist. Bevestiging mislukt.';
     } else {
-        // Succesvol geverifieerd. De daadwerkelijke verwijdering en sessieafhandeling volgen in de volgende commits.
+        // Verwijder de gebruiker uit de database (tickets worden door ON DELETE CASCADE automatisch verwijderd)
+        $deleteStmt = $db->prepare('DELETE FROM gebruikers WHERE id = :id');
+        $deleteStmt->execute([':id' => $gebruikerId]);
+        // Sessieafhandeling volgt in de volgende commit.
     }
 }
 
