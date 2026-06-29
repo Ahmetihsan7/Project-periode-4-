@@ -65,4 +65,6 @@ project/
 - [x] Admin dashboard met statistieken
 - [x] Medewerker ticketscanner
 - [x] Bezoeker profielpagina
+- [x] Profiel update (naam & e-mailadres met uniekheidscontrole)
+- [x] Account permanent verwijderen (Gevaar Zone met wachtwoordverificatie)
 - [x] Account aanmaken met validatie
