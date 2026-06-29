@@ -36,6 +36,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['actie']) && $_POST['a
     }
 }
 
+// Account verwijderen
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['actie']) && $_POST['actie'] === 'verwijder_account') {
+    $wachtwoord = $_POST['wachtwoord'] ?? '';
+
+    // Haal huidige hash op
+    $db   = getDB();
+    $stmt = $db->prepare('SELECT wachtwoord FROM gebruikers WHERE id = :id');
+    $stmt->execute([':id' => $gebruikerId]);
+    $rij  = $stmt->fetch();
+
+    if (!$rij || !password_verify($wachtwoord, $rij['wachtwoord'])) {
+        $fouten['verwijder'] = 'Wachtwoord is onjuist. Bevestiging mislukt.';
+    } else {
+        // Succesvol geverifieerd. De daadwerkelijke verwijdering en sessieafhandeling volgen in de volgende commits.
+    }
+}
+
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
