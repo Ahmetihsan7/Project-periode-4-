@@ -10,16 +10,30 @@ $gebruikerId = $_SESSION['gebruiker_id'];
 $fouten = [];
 $succes = '';
 
-// Wijzig naam verwerken
+// Wijzig naam en email verwerken
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nieuweNaam = trim($_POST['naam'] ?? '');
+    $nieuwEmail = trim($_POST['email'] ?? '');
 
     if (strlen($nieuweNaam) < 2) {
         $fouten['naam'] = 'Naam moet minimaal 2 tekens zijn.';
+    }
+
+    if (empty($nieuwEmail) || !filter_var($nieuwEmail, FILTER_VALIDATE_EMAIL)) {
+        $fouten['email'] = 'Voer een geldig e-mailadres in.';
     } else {
         $db = getDB();
-        $stmt = $db->prepare('UPDATE gebruikers SET naam = :naam WHERE id = :id');
-        if ($stmt->execute([':naam' => $nieuweNaam, ':id' => $gebruikerId])) {
+        $stmt = $db->prepare('SELECT id FROM gebruikers WHERE email = :email AND id != :id');
+        $stmt->execute([':email' => $nieuwEmail, ':id' => $gebruikerId]);
+        if ($stmt->fetch()) {
+            $fouten['email'] = 'Dit e-mailadres is al in gebruik.';
+        }
+    }
+
+    if (empty($fouten)) {
+        $db = getDB();
+        $stmt = $db->prepare('UPDATE gebruikers SET naam = :naam, email = :email WHERE id = :id');
+        if ($stmt->execute([':naam' => $nieuweNaam, ':email' => $nieuwEmail, ':id' => $gebruikerId])) {
             $_SESSION['naam'] = $nieuweNaam;
             $succes = 'Profiel succesvol bijgewerkt!';
         }
