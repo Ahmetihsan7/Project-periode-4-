@@ -130,6 +130,9 @@ require_once __DIR__ . '/../includes/header.php';
                         <p class="form-error"><?= h($fouten['email']) ?></p>
                     <?php endif; ?>
                     <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">Zorg dat dit een uniek e-mailadres is.</p>
+                    <div style="background: rgba(212, 175, 55, 0.1); border-left: 3px solid var(--gold); padding: 8px 12px; margin-top: 8px; border-radius: 0 4px 4px 0;">
+                        <p style="font-size:11px; color:var(--gold); margin:0;">💡 Let op: Als u uw e-mailadres wijzigt, moet u de volgende keer inloggen met uw nieuwe e-mailadres.</p>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn btn-primary">
