@@ -113,6 +113,32 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
         </div>
 
+        <!-- Account verwijderen (Gevaar Zone) -->
+        <div class="form-card fade-in" style="margin-top:24px; border: 1px solid var(--danger);">
+            <h2 style="font-size:18px; font-weight:700; margin-bottom:10px; color: var(--danger);">⚠️ Gevaar Zone — Account Verwijderen</h2>
+            <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">
+                Het verwijderen van uw account is permanent en kan niet ongedaan worden gemaakt. Alle gekoppelde actieve en historische tickets zullen ook definitief worden verwijderd.
+            </p>
+
+            <form method="POST" action="/bezoeker/account-instellingen.php" onsubmit="return confirm('Weet u zeker dat u uw account permanent wilt verwijderen?');">
+                <input type="hidden" name="actie" value="verwijder_account">
+
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label class="form-label" for="verwijder_wachtwoord" style="color: var(--danger);">Bevestig met uw wachtwoord</label>
+                    <input type="password" name="wachtwoord" id="verwijder_wachtwoord"
+                        class="form-control <?= isset($fouten['verwijder']) ? 'invalid' : '' ?>"
+                        placeholder="Voer uw wachtwoord in" required>
+                    <?php if (isset($fouten['verwijder'])): ?>
+                        <p class="form-error"><?= h($fouten['verwijder']) ?></p>
+                    <?php endif; ?>
+                </div>
+
+                <button type="submit" class="btn btn-danger" style="background-color: var(--danger); border-color: var(--danger);">
+                    🗑️ Mijn Account Definitief Verwijderen
+                </button>
+            </form>
+        </div>
+
         <div style="margin-top:24px; display:flex; gap:12px;">
             <a href="/bezoeker/profiel.php" class="btn btn-secondary">← Terug naar profiel</a>
         </div>
