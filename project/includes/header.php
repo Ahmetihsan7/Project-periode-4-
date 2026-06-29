@@ -99,3 +99,11 @@ $siteNaam = 'TicketApp';
         <button onclick="this.parentElement.remove()" class="flash-close">&times;</button>
     </div>
 <?php endif; ?>
+
+<!-- Statusmelding via URL -->
+<?php if (isset($_GET['status']) && $_GET['status'] === 'account_verwijderd'): ?>
+    <div class="flash-message flash-success" id="flashMessage">
+        Je account is succesvol en definitief verwijderd.
+        <button onclick="this.parentElement.remove()" class="flash-close">&times;</button>
+    </div>
+<?php endif; ?>
