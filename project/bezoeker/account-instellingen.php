@@ -52,7 +52,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['actie']) && $_POST['a
         // Verwijder de gebruiker uit de database (tickets worden door ON DELETE CASCADE automatisch verwijderd)
         $deleteStmt = $db->prepare('DELETE FROM gebruikers WHERE id = :id');
         $deleteStmt->execute([':id' => $gebruikerId]);
-        // Sessieafhandeling volgt in de volgende commit.
+        // Vernietig de sessie en log de gebruiker uit
+        $_SESSION = [];
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params["path"], $params["domain"],
+                $params["secure"], $params["httponly"]
+            );
+        }
+        session_destroy();
+
+        // Stuur door naar de homepage met een status-parameter
+        header('Location: /index.php?status=account_verwijderd');
+        exit;
     }
 }
 
