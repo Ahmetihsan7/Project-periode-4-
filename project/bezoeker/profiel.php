@@ -35,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $db->prepare('UPDATE gebruikers SET naam = :naam, email = :email WHERE id = :id');
         if ($stmt->execute([':naam' => $nieuweNaam, ':email' => $nieuwEmail, ':id' => $gebruikerId])) {
             $_SESSION['naam'] = $nieuweNaam;
+            $_SESSION['email'] = $nieuwEmail;
             $succes = 'Profiel succesvol bijgewerkt!';
         }
     }
