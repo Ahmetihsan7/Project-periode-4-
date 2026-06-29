@@ -106,12 +106,15 @@ require_once __DIR__ . '/../includes/header.php';
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">E-mailadres</label>
+                    <label class="form-label" for="email">E-mailadres</label>
                     <input
-                        type="email" class="form-control"
-                        value="<?= h($gebruiker['email']) ?>"
-                        disabled style="opacity:0.6; cursor:not-allowed;">
-                    <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">E-mailadres kan niet worden gewijzigd.</p>
+                        type="email" name="email" id="email"
+                        class="form-control <?= isset($fouten['email']) ? 'invalid' : '' ?>"
+                        value="<?= h($gebruiker['email']) ?>" required>
+                    <?php if (isset($fouten['email'])): ?>
+                        <p class="form-error"><?= h($fouten['email']) ?></p>
+                    <?php endif; ?>
+                    <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">Zorg dat dit een uniek e-mailadres is.</p>
                 </div>
 
                 <button type="submit" class="btn btn-primary">
