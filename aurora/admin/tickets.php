@@ -4,7 +4,7 @@
 
 /**
  * Ticketbeheer - Aurora Theater Admin en het is gelukt en update ook gedaan
- * mijn taak was ticket updaten en annuleren 
+ * mijn taak was ticket updaten en annuleren knop te zetten
  * Beheert de ticketboekingen (CRUD tickets).
  * Toegankelijk voor admins en medewerkers.
  */
