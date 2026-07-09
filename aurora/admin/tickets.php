@@ -4,7 +4,7 @@
 
 /**
  * Ticketbeheer - Aurora Theater Admin en het is gelukt en update ook gedaan
- * 
+ * ik doe ticket e
  * Beheert de ticketboekingen (CRUD tickets).
  * Toegankelijk voor admins en medewerkers.
  */
