@@ -2,19 +2,44 @@
 /**
  * Gebruikersbeheer (Accounts) - Aurora Theater Admin
  * 
- * READ-ONLY: Toont een overzicht van alle gebruikersaccounts.
+ * Beheert de gebruikersaccounts.
  * Alleen toegankelijk voor admins.
  */
 
-// Inclusief header (en auth-controle)
-include '../includes/admin_header.php';
+// Laad db en functies om redirects te kunnen verwerken vóór HTML output
+require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../includes/functions.php';
 
 // Extra veiligheid: Alleen admins mogen hier komen
-if (!hasRole('admin')) {
-    setFlashMessage('error', 'Toegang geweigerd: Alleen beheerders mogen accounts bekijken.');
-    header('Location: dashboard.php');
+checkAccess(['admin']);
+
+$action = sanitize($_GET['action'] ?? 'list');
+$user_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+// Verwerk DELETE actie
+if ($action === 'delete' && $user_id > 0) {
+    try {
+        // Gebruik PDO prepared statement om account te verwijderen
+        $stmt = $pdo->prepare("DELETE FROM gebruikers WHERE id = ?");
+        $stmt->execute([$user_id]);
+        
+        // Controleer of er daadwerkelijk een rij is verwijderd
+        if ($stmt->rowCount() > 0) {
+            setFlashMessage('success', 'Gegevens succesvol verwijderd');
+        } else {
+            setFlashMessage('error', 'Gegevens konden niet worden verwijderd');
+        }
+    } catch (PDOException $e) {
+        // Foutafhandeling bij database errors (bijv. foreign keys)
+        setFlashMessage('error', 'Gegevens konden niet worden verwijderd');
+    }
+    
+    header('Location: accounts.php');
     exit;
 }
+
+// Inclusief header (HTML start)
+include '../includes/admin_header.php';
 ?>
 
 <!-- Overzichtstabel van alle gebruikers -->
@@ -48,6 +73,7 @@ if (!hasRole('admin')) {
                     <th>E-mail</th>
                     <th>Rol</th>
                     <th>Geregistreerd op</th>
+                    <th>Acties</th>
                 </tr>
             </thead>
             <tbody>
@@ -65,14 +91,18 @@ if (!hasRole('admin')) {
                                 </span>
                             </td>
                             <td><?php echo date('d-m-Y H:i', strtotime($user['gemaakt_op'])); ?></td>
+                            <td class="action-buttons">
+                                <a href="accounts/edit.php?id=<?php echo $user['id']; ?>" class="btn-action" style="width: auto; padding: 0 10px; gap: 5px;" title="Wijzigen">✏️ Wijzigen</a>
+                                <a href="accounts.php?action=delete&id=<?php echo $user['id']; ?>" class="btn-action btn-delete" style="width: auto; padding: 0 10px; gap: 5px;" title="Verwijderen" onclick="return confirm('Weet u zeker dat u dit record wilt verwijderen?');">🗑️ Verwijderen</a>
+                            </td>
                         </tr>
                 <?php
                     endwhile;
                 else:
                 ?>
                     <tr>
-                        <td colspan="5" class="text-center" style="padding: 30px 0; color: var(--admin-text-muted);">
-                            Geen accounts gevonden in de database.
+                        <td colspan="6" class="text-center" style="padding: 30px 0; color: var(--admin-text-muted);">
+                            Geen gegevens gevonden.
                         </td>
                     </tr>
                 <?php endif; ?>
