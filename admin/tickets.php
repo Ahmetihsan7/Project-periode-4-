@@ -23,9 +23,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-// Blokkeer cancel/delete acties
-if (($action === 'cancel' || $action === 'delete') && $ticket_id > 0) {
-    setFlashMessage('error', 'Fout: Boekingen annuleren of verwijderen is uitgeschakeld.');
+// Blokkeer cancel actie
+if ($action === 'cancel' && $ticket_id > 0) {
+    setFlashMessage('error', 'Fout: Boekingen annuleren is uitgeschakeld.');
+    header('Location: tickets.php');
+    exit;
+}
+
+// Verwerk DELETE actie
+if ($action === 'delete' && $ticket_id > 0) {
+    try {
+        // Gebruik PDO prepared statement om ticket te verwijderen
+        $stmt = $pdo->prepare("DELETE FROM tickets WHERE id = ?");
+        $stmt->execute([$ticket_id]);
+        
+        if ($stmt->rowCount() > 0) {
+            setFlashMessage('success', 'Gegevens succesvol verwijderd');
+        } else {
+            setFlashMessage('error', 'Gegevens konden niet worden verwijderd');
+        }
+    } catch (PDOException $e) {
+        // Foutafhandeling bij database errors
+        setFlashMessage('error', 'Gegevens konden niet worden verwijderd');
+    }
+    
     header('Location: tickets.php');
     exit;
 }
@@ -137,6 +158,7 @@ if ($action === 'add'):
                         <th>Totaalprijs</th>
                         <th>Boekingsdatum</th>
                         <th>Status</th>
+                        <th>Acties</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -163,14 +185,18 @@ if ($action === 'add'):
                                         <?php echo $ticket['status']; ?>
                                     </span>
                                 </td>
+                                <td class="action-buttons">
+                                    <a href="tickets/edit.php?id=<?php echo $ticket['id']; ?>" class="btn-action" style="width: auto; padding: 0 10px; gap: 5px;" title="Wijzigen">✏️ Wijzigen</a>
+                                    <a href="tickets.php?action=delete&id=<?php echo $ticket['id']; ?>" class="btn-action btn-delete" style="width: auto; padding: 0 10px; gap: 5px;" title="Verwijderen" onclick="return confirm('Weet u zeker dat u dit record wilt verwijderen?');">🗑️ Verwijderen</a>
+                                </td>
                             </tr>
                     <?php 
                         endwhile;
                     else:
                     ?>
                         <tr>
-                            <td colspan="8" class="text-center" style="padding: 30px 0; color: var(--admin-text-muted);">
-                                Geen ticketboekingen gevonden in de database.
+                            <td colspan="9" class="text-center" style="padding: 30px 0; color: var(--admin-text-muted);">
+                                Geen gegevens gevonden.
                             </td>
                         </tr>
                     <?php endif; ?>
