@@ -16,9 +16,23 @@ checkAccess(['admin', 'medewerker']);
 $action = sanitize($_GET['action'] ?? 'list');
 $message_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// Blokkeer delete acties
+// Verwerk DELETE actie
 if ($action === 'delete' && $message_id > 0) {
-    setFlashMessage('error', 'Fout: Verwijderen van berichten is uitgeschakeld.');
+    try {
+        // Gebruik PDO prepared statement om melding te verwijderen
+        $stmt = $pdo->prepare("DELETE FROM meldingen WHERE id = ?");
+        $stmt->execute([$message_id]);
+        
+        if ($stmt->rowCount() > 0) {
+            setFlashMessage('success', 'Gegevens succesvol verwijderd');
+        } else {
+            setFlashMessage('error', 'Gegevens konden niet worden verwijderd');
+        }
+    } catch (PDOException $e) {
+        // Foutafhandeling bij database errors
+        setFlashMessage('error', 'Gegevens konden niet worden verwijderd');
+    }
+    
     header('Location: meldingen.php');
     exit;
 }
@@ -165,6 +179,8 @@ if ($action === 'view' && $message_id > 0):
                                 <td><?php echo date('d-m-Y H:i', strtotime($msg['gemaakt_op'])); ?></td>
                                 <td class="action-buttons">
                                     <a href="meldingen.php?action=view&id=<?php echo $msg['id']; ?>" class="btn-action" title="Bekijken / Lezen">👁️</a>
+                                    <a href="meldingen/edit.php?id=<?php echo $msg['id']; ?>" class="btn-action" style="width: auto; padding: 0 10px; gap: 5px;" title="Wijzigen">✏️ Wijzigen</a>
+                                    <a href="meldingen.php?action=delete&id=<?php echo $msg['id']; ?>" class="btn-action btn-delete" style="width: auto; padding: 0 10px; gap: 5px;" title="Verwijderen" onclick="return confirm('Weet u zeker dat u dit record wilt verwijderen?');">🗑️ Verwijderen</a>
                                 </td>
                             </tr>
                     <?php 
@@ -173,7 +189,7 @@ if ($action === 'view' && $message_id > 0):
                     ?>
                         <tr>
                             <td colspan="6" class="text-center" style="padding: 30px 0; color: var(--admin-text-muted);">
-                                Geen berichten of meldingen gevonden in de database.
+                                Geen gegevens gevonden.
                             </td>
                         </tr>
                     <?php endif; ?>
