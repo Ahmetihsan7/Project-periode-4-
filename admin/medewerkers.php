@@ -30,9 +30,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-// Blokkeer delete acties
+// Verwerk DELETE actie
 if ($action === 'delete' && $employee_id > 0) {
-    setFlashMessage('error', 'Fout: Verwijderen van medewerkerscontracten is uitgeschakeld.');
+    try {
+        // Gebruik PDO prepared statement om medewerker te verwijderen
+        $stmt = $pdo->prepare("DELETE FROM medewerkers WHERE id = ?");
+        $stmt->execute([$employee_id]);
+        
+        if ($stmt->rowCount() > 0) {
+            setFlashMessage('success', 'Gegevens succesvol verwijderd');
+        } else {
+            setFlashMessage('error', 'Gegevens konden niet worden verwijderd');
+        }
+    } catch (PDOException $e) {
+        // Foutafhandeling bij database errors
+        setFlashMessage('error', 'Gegevens konden niet worden verwijderd');
+    }
+    
     header('Location: medewerkers.php');
     exit;
 }
@@ -175,6 +189,7 @@ if ($action === 'add' || $action === 'edit'):
                         <th>Salaris</th>
                         <th>Aangenomen Op</th>
                         <th>Gebruikersrol</th>
+                        <th>Acties</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -194,14 +209,18 @@ if ($action === 'add' || $action === 'edit'):
                                         <?php echo $emp['rol']; ?>
                                     </span>
                                 </td>
+                                <td class="action-buttons">
+                                    <a href="medewerkers/edit.php?id=<?php echo $emp['id']; ?>" class="btn-action" style="width: auto; padding: 0 10px; gap: 5px;" title="Wijzigen">✏️ Wijzigen</a>
+                                    <a href="medewerkers.php?action=delete&id=<?php echo $emp['id']; ?>" class="btn-action btn-delete" style="width: auto; padding: 0 10px; gap: 5px;" title="Verwijderen" onclick="return confirm('Weet u zeker dat u dit record wilt verwijderen?');">🗑️ Verwijderen</a>
+                                </td>
                             </tr>
                     <?php 
                         endwhile;
                     else:
                     ?>
                         <tr>
-                            <td colspan="7" class="text-center" style="padding: 30px 0; color: var(--admin-text-muted);">
-                                Geen gekoppelde medewerkerscontracten gevonden.
+                            <td colspan="8" class="text-center" style="padding: 30px 0; color: var(--admin-text-muted);">
+                                Geen gegevens gevonden.
                             </td>
                         </tr>
                     <?php endif; ?>
