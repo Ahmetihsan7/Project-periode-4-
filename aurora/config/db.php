@@ -12,7 +12,7 @@ mysqli_report(MYSQLI_REPORT_OFF);
 // Database configuratie parameters
 $db_host = 'localhost';
 $db_user = 'root';
-$db_pass = '';
+$db_pass = 'fout melding';
 $db_name = 'aurora_theater';
 
 // Probeer verbinding te maken met de database (met @ om waarschuwingen te onderdrukken)
