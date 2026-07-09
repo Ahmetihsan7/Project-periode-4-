@@ -23,9 +23,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-// Blokkeer delete acties
+// Verwerk DELETE actie
 if ($action === 'delete' && $show_id > 0) {
-    setFlashMessage('error', 'Fout: Verwijderen van voorstellingen is uitgeschakeld.');
+    try {
+        // Gebruik PDO prepared statement om voorstelling te verwijderen
+        $stmt = $pdo->prepare("DELETE FROM voorstellingen WHERE id = ?");
+        $stmt->execute([$show_id]);
+        
+        if ($stmt->rowCount() > 0) {
+            setFlashMessage('success', 'Gegevens succesvol verwijderd');
+        } else {
+            setFlashMessage('error', 'Gegevens konden niet worden verwijderd');
+        }
+    } catch (PDOException $e) {
+        // Foutafhandeling bij database errors (bijv. gekoppelde records)
+        setFlashMessage('error', 'Gegevens konden niet worden verwijderd');
+    }
+    
     header('Location: voorstellingen.php');
     exit;
 }
@@ -177,6 +191,7 @@ if ($action === 'add' || $action === 'edit'):
                         <th>Beschikbaar / Totaal</th>
                         <th>Datum & Tijd</th>
                         <th>Type</th>
+                        <th>Acties</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -188,11 +203,11 @@ if ($action === 'add' || $action === 'edit'):
                             <tr style="<?php echo $is_past ? 'opacity: 0.55;' : ''; ?>">
                                 <td>
                                     <?php 
-                                    $img_path = sanitize($show['afbeelding']);
-                                    if (!file_exists(__DIR__ . '/../' . $img_path) || empty($img_path)) {
-                                        $img_path = 'assets/images/hero.png';
-                                    }
-                                    ?>
+                                     $img_path = sanitize($show['afbeelding']);
+                                     if (!file_exists(__DIR__ . '/../' . $img_path) || empty($img_path)) {
+                                         $img_path = 'assets/images/hero.png';
+                                     }
+                                     ?>
                                     <img src="../<?php echo $img_path; ?>" alt="Poster" style="width: 45px; height: 60px; object-fit: cover; border-radius: 4px; border: 1px solid var(--admin-border);">
                                 </td>
                                 <td>
@@ -217,14 +232,18 @@ if ($action === 'add' || $action === 'edit'):
                                         <span style="color: var(--admin-text-muted); font-size: 0.85rem;">Normaal</span>
                                     <?php endif; ?>
                                 </td>
+                                <td class="action-buttons">
+                                    <a href="voorstellingen/edit.php?id=<?php echo $show['id']; ?>" class="btn-action" style="width: auto; padding: 0 10px; gap: 5px;" title="Wijzigen">✏️ Wijzigen</a>
+                                    <a href="voorstellingen.php?action=delete&id=<?php echo $show['id']; ?>" class="btn-action btn-delete" style="width: auto; padding: 0 10px; gap: 5px;" title="Verwijderen" onclick="return confirm('Weet u zeker dat u dit record wilt verwijderen?');">🗑️ Verwijderen</a>
+                                </td>
                             </tr>
                     <?php 
                         endwhile;
                     else:
                     ?>
                         <tr>
-                            <td colspan="7" class="text-center" style="padding: 30px 0; color: var(--admin-text-muted);">
-                                Geen voorstellingen ingepland in de database.
+                            <td colspan="8" class="text-center" style="padding: 30px 0; color: var(--admin-text-muted);">
+                                Geen gegevens gevonden.
                             </td>
                         </tr>
                     <?php endif; ?>
